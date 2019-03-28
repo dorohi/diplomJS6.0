@@ -63,18 +63,19 @@ window.addEventListener('DOMContentLoaded', () => {
 
 	glazingSlider.addEventListener('click', function (event) {
 		let target = event.target;
-		(!target.classList.contains('glazing_block')) ? target = target.parentNode : target = null;
+		if (!target.classList.contains('glazing_block')){
+			target = target.parentNode;
+		}
 
 		if (target) {
-			const activeLink = target.querySelector('a');
 			for (let i = 0; i < glazingBlock.length; i++) {
+				glazingBlock[i].querySelector('a').classList.remove('active');
 				if (glazingBlock[i] == target) {
 					hideTabContent(0);
 					showTabContent(i);
-					break;
 				}
 			}
-			activeLink.classList.add('active');
+			target.querySelector('a').classList.add('active');
 		}
 	});
 
