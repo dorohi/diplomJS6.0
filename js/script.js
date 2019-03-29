@@ -40,7 +40,7 @@ window.addEventListener('DOMContentLoaded', () => {
 	});
 
 	// МЫ ВАМ ПЕРЕЗВОНИМ 60 СЕК
-	setTimeout( () => {
+	setTimeout(() => {
 		popupModal.style.display = "block";
 	}, 60000);
 
@@ -115,16 +115,16 @@ window.addEventListener('DOMContentLoaded', () => {
 
 	// ТАЙМЕР СКИДОК 
 
-	const deadLine = '2019-05-04';
+	const deadLine = '2019-04-05';
 
 	function getTimeRemaining(endTime) {
-		const t = Date.parse(endTime) - Date.parse(new Date());
+		let t = Date.parse(endTime) - Date.parse(new Date());
+		t <= 0 ? t = 0 : t;
 		const seconds = Math.floor(t / 1000 % 60),
 			minutes = Math.floor(t / 1000 / 60 % 60),
-			hours = Math.floor(t / 1000 / 60 / 60 % 60),
-			days = Math.floor(t / 1000 / 60 / 60 / 24 % 24);
-			console.log(days + ' ' + hours + ' ' + minutes + ' ' + seconds);
-			return {
+			hours = Math.floor(t / 1000  / (60 * 60) % 24),
+			days = Math.floor(t / 1000 / (60 * 60 * 24));
+		return {
 			'total': t,
 			'days': days,
 			'hours': hours,
@@ -137,8 +137,8 @@ window.addEventListener('DOMContentLoaded', () => {
 		const timer = document.getElementById(id),
 			days = timer.querySelector('#days'),
 			hours = timer.querySelector('#hours'),
-			minutes = timer.querySelector('#minutes'),
-			seconds = timer.querySelector('#seconds'),
+			minutes = timer.querySelector('#minutes').firstChild,
+			seconds = timer.querySelector('#seconds').firstChild,
 			timeInterval = setInterval(update, 1000);
 
 		function update() {
