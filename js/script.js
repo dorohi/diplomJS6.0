@@ -39,9 +39,9 @@ window.addEventListener('DOMContentLoaded', () => {
 		}
 	});
 
-	setTimeout(function () {
+	// МЫ ВАМ ПЕРЕЗВОНИМ 60 СЕК
+	setTimeout( () => {
 		popupModal.style.display = "block";
-		console.log('display');
 	}, 60000);
 
 	//ТАБЫ ОСТЕКЛЕНИЕ БАЛКОНОВ И ЛОДЖИЙ
