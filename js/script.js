@@ -39,6 +39,11 @@ window.addEventListener('DOMContentLoaded', () => {
 		}
 	});
 
+	setTimeout(function () {
+		popupModal.style.display = "block";
+		console.log('display');
+	}, 60000);
+
 	//ТАБЫ ОСТЕКЛЕНИЕ БАЛКОНОВ И ЛОДЖИЙ
 
 	const glazingSlider = document.querySelector('.glazing_slider'),
