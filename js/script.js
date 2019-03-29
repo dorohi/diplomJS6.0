@@ -122,7 +122,7 @@ window.addEventListener('DOMContentLoaded', () => {
 		t <= 0 ? t = 0 : t;
 		const seconds = Math.floor(t / 1000 % 60),
 			minutes = Math.floor(t / 1000 / 60 % 60),
-			hours = Math.floor(t / 1000  / (60 * 60) % 24),
+			hours = Math.floor(t / 1000 / (60 * 60) % 24),
 			days = Math.floor(t / 1000 / (60 * 60 * 24));
 		return {
 			'total': t,
@@ -159,5 +159,32 @@ window.addEventListener('DOMContentLoaded', () => {
 	function getNormal(number) {
 		return number < 10 ? '0' + number : number;
 	}
+
+
+	//НАШИ РАБОТЫ
+
+	const works = document.querySelectorAll('.works .row div');
+	works.forEach((work) => {
+		work.addEventListener('click', function (event) {
+			event.preventDefault();
+			const popupImage = document.createElement('div');
+			const curentImage = document.createElement('img');
+			const curentImageHref = this.querySelector('a').getAttribute('href');
+			popupImage.classList.add('popup');
+			curentImage.setAttribute('src', curentImageHref);
+			popupImage.appendChild(curentImage);
+			document.body.appendChild(popupImage);
+			popupImage.style.display = 'flex';
+			popupImage.style.alignItems = 'center';
+			popupImage.style.justifyContent = 'center';
+
+			popupImage.addEventListener('click', (event) => {
+				if (event.target.classList.contains('popup')){
+					popupImage.style.display = 'none';
+				}
+			});
+		});
+	});
+
 
 });
