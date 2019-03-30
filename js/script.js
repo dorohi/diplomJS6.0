@@ -5,13 +5,15 @@ window.addEventListener( 'DOMContentLoaded', () => {
 	//////////////////////////////////////////////////////////////////
 	/*               Модальное окно "Вызова инженера"               */
 	//////////////////////////////////////////////////////////////////
-	const engineerButton = document.querySelector('.popup_engineer_btn'),
-		popupEngineer = document.querySelector('.popup_engineer');
+	const engineerButton = document.querySelector('.popup_engineer_btn'),	// Кнопка вызова
+		popupEngineer = document.querySelector('.popup_engineer');			// Модальное окно
 
+	/* Показ окна */
 	engineerButton.addEventListener( 'click', () => {
 		popupEngineer.style.display = "block";
 	});
 
+	/* Закрытие окна */
 	popupEngineer.addEventListener( 'click', (event) => {
 		const target = event.target;
 
@@ -25,14 +27,17 @@ window.addEventListener( 'DOMContentLoaded', () => {
 	//////////////////////////////////////////////////////////////////
 	/*               Модальное окно "Обратного звонка"              */
 	//////////////////////////////////////////////////////////////////
-	const phoneLink = document.querySelectorAll('.phone_link'),
-		popupModal = document.querySelector('.popup');
+	const phoneLink = document.querySelectorAll('.phone_link'),			// Кнопка вызова
+		popupModal = document.querySelector('.popup');					// Модальное окно
 
+	/* Показ окна */
 	phoneLink.forEach( element => {
 		element.addEventListener( 'click', () => {
 			popupModal.style.display = "block";
 		});
 	});
+
+	/* Закрытие окна */
 	popupModal.addEventListener( 'click', (event) => {
 		const target = event.target;
 
@@ -46,10 +51,14 @@ window.addEventListener( 'DOMContentLoaded', () => {
 	//////////////////////////////////////////////////////////////////
 	/*                 Модальное окно "Калькулятора"                */
 	//////////////////////////////////////////////////////////////////
-	const popupCalcBtn = document.querySelectorAll('.popup_calc_btn'),	//Кнопки вызова первого окна
-		popupCalc = document.querySelector('.popup_calc'),				//Модальное окно выбора формы окна
-		balconIcons = document.querySelectorAll('.balcon_icons'), 		//меню выбора формы балкона
-		bigImg = document.querySelectorAll('.big_img img');				//Блоки с большыми картинками
+	const popupCalcBtn = document.querySelectorAll('.popup_calc_btn'),		// Кнопки вызова первого окна
+		popupCalc = document.querySelector('.popup_calc'),					// Модальное окно выбора формы балкона
+		balconIcons = document.querySelectorAll('.balcon_icons a'), 		// меню выбора формы балкона
+		bigImg = document.querySelectorAll('.big_img img'),					// Блоки с большыми картинками
+		popupCalcButton = document.querySelector('.popup_calc_button'),		// Кнопка "Далее"
+		popupCalcProfile = document.querySelector('.popup_calc_profile'),	// Второе модальное окно
+		popupCalcInput = popupCalc.querySelectorAll('input');
+	let windowSettings = {};
 
 	/* Показ окна */
 	popupCalcBtn.forEach( element => {
@@ -69,15 +78,44 @@ window.addEventListener( 'DOMContentLoaded', () => {
 		}
 	});
 
-
+	/* Обработка окна */
 	balconIcons.forEach( element => {
 		element.addEventListener( 'click', (event) => {
 			event.preventDefault();
-			const classWindowCalc = event.target.getAttribute('class');
-			const srcWindowCalc = event.target.getAttribute('src');
-			console.log(classWindowCalc);
-			console.log(srcWindowCalc);
+			const typeWindowCalc = event.target.parentNode.getAttribute('class');
+			
+			bigImg.forEach( el => {
+				const typeSelectedWindow = el.getAttribute('id');	
+				if (typeSelectedWindow == typeWindowCalc) {
+					el.style.display = 'inline-block';
+					windowSettings.type = typeWindowCalc;
+				} else {
+					el.style.display = 'none';
+				}
+			});
+			console.log(windowSettings);
 		});
+	});
+
+	/* Вводим только цифры в инпуты */
+	popupCalcInput.forEach( input => {
+		input.addEventListener('keyup', function () {
+			this.value = this.value.replace(/[^0-9]+/g, '');
+			input.textContent = this.value;
+		});
+	});
+
+	popupCalcButton.addEventListener( 'click', () => {
+		if (popupCalcInput[0].value && popupCalcInput[1].value){
+			popupCalc.style.display = 'none';
+			popupCalcProfile.style.display = 'block';
+		} else {
+			popupCalcInput.forEach( input => {
+				if (!input.value){
+					input.focus();
+				}
+			});
+		}
 	});
 
 	//////////////////////////////////////////////////////////////////
