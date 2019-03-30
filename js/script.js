@@ -1,20 +1,20 @@
 'use strict';
 
-window.addEventListener( 'DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', () => {
 
 	//////////////////////////////////////////////////////////////////
 	/*               Модальное окно "Вызова инженера"               */
 	//////////////////////////////////////////////////////////////////
-	const engineerButton = document.querySelector('.popup_engineer_btn'),	// Кнопка вызова
-		popupEngineer = document.querySelector('.popup_engineer');			// Модальное окно
+	const engineerButton = document.querySelector('.popup_engineer_btn'), // Кнопка вызова
+		popupEngineer = document.querySelector('.popup_engineer'); // Модальное окно
 
 	/* Показ окна */
-	engineerButton.addEventListener( 'click', () => {
+	engineerButton.addEventListener('click', () => {
 		popupEngineer.style.display = "block";
 	});
 
 	/* Закрытие окна */
-	popupEngineer.addEventListener( 'click', (event) => {
+	popupEngineer.addEventListener('click', (event) => {
 		const target = event.target;
 
 		if (target.classList.contains('popup_close') ||
@@ -27,18 +27,19 @@ window.addEventListener( 'DOMContentLoaded', () => {
 	//////////////////////////////////////////////////////////////////
 	/*               Модальное окно "Обратного звонка"              */
 	//////////////////////////////////////////////////////////////////
-	const phoneLink = document.querySelectorAll('.phone_link'),			// Кнопка вызова
-		popupModal = document.querySelector('.popup');					// Модальное окно
+	const phoneLink = document.querySelectorAll('.phone_link'), // Кнопка вызова
+		popupModal = document.querySelector('.popup'); // Модальное окно
 
 	/* Показ окна */
-	phoneLink.forEach( element => {
-		element.addEventListener( 'click', () => {
+	phoneLink.forEach(element => {
+		element.addEventListener('click', () => {
+			event.preventDefault();
 			popupModal.style.display = "block";
 		});
 	});
 
 	/* Закрытие окна */
-	popupModal.addEventListener( 'click', (event) => {
+	popupModal.addEventListener('click', (event) => {
 		const target = event.target;
 
 		if (target.classList.contains('popup_close') ||
@@ -47,45 +48,52 @@ window.addEventListener( 'DOMContentLoaded', () => {
 			popupModal.style.display = 'none';
 		}
 	});
-	
+
 	//////////////////////////////////////////////////////////////////
 	/*                 Модальное окно "Калькулятора"                */
 	//////////////////////////////////////////////////////////////////
-	const popupCalcBtn = document.querySelectorAll('.popup_calc_btn'),		// Кнопки вызова первого окна
-		popupCalc = document.querySelector('.popup_calc'),					// Модальное окно выбора формы балкона
-		balconIcons = document.querySelectorAll('.balcon_icons a'), 		// меню выбора формы балкона
-		bigImg = document.querySelectorAll('.big_img img'),					// Блоки с большыми картинками
-		popupCalcButton = document.querySelector('.popup_calc_button'),		// Кнопка "Далее"
-		popupCalcProfile = document.querySelector('.popup_calc_profile'),	// Второе модальное окно
-		popupCalcInput = popupCalc.querySelectorAll('input');
+	const popupCalcBtn = document.querySelectorAll('.popup_calc_btn'), // Кнопки вызова первого окна
+		popupCalc = document.querySelector('.popup_calc'), // Модальное окно выбора формы балкона
+		balconIcons = document.querySelectorAll('.balcon_icons a'), // меню выбора формы балкона
+		bigImg = document.querySelectorAll('.big_img img'), // Блоки с большыми картинками
+		popupCalcButton = document.querySelector('.popup_calc_button'), // Кнопка "Далее"
+		popupCalcProfile = document.querySelector('.popup_calc_profile'), // Второе модальное окно
+		popupCalcProfileButton = document.querySelector('.popup_calc_profile_button'), // Третье модальное окно
+		popupCalcEnd = document.querySelector('.popup_calc_end'), // Третье модальное окно
+		popupCalcInput = popupCalc.querySelectorAll('input'),
+		popupCalcSelect = document.querySelector('select'),
+		popupCalcLabel = popupCalcProfile.querySelectorAll('label');
 	let windowSettings = {};
 
 	/* Показ окна */
-	popupCalcBtn.forEach( element => {
-		element.addEventListener( 'click', () => {
+	popupCalcBtn.forEach(element => {
+		element.addEventListener('click', () => {
 			popupCalc.style.display = "block";
+			windowSettings.type = balconIcons[0].getAttribute('class');
+			console.log(windowSettings);
 		});
 	});
 
 	/* Закрытие окна */
-	popupCalc.addEventListener( 'click', (event) => {
+	popupCalc.addEventListener('click', (event) => {
 		const target = event.target;
 
 		if (target.classList.contains('popup_calc_close') ||
 			target.parentNode.classList.contains('popup_calc_close') ||
 			target.classList.contains('popup_calc')) {
 			popupCalc.style.display = 'none';
+			windowSettings = {};
 		}
 	});
 
 	/* Обработка первого окна */
-	balconIcons.forEach( element => {
-		element.addEventListener( 'click', (event) => {
+	balconIcons.forEach(element => {
+		element.addEventListener('click', (event) => {
 			event.preventDefault();
 			const typeWindowCalc = event.target.parentNode.getAttribute('class');
-			
-			bigImg.forEach( el => {
-				const typeSelectedWindow = el.getAttribute('id');	
+
+			bigImg.forEach(el => {
+				const typeSelectedWindow = el.getAttribute('id');
 				if (typeSelectedWindow == typeWindowCalc) {
 					el.style.display = 'inline-block';
 					windowSettings.type = typeWindowCalc;
@@ -93,26 +101,30 @@ window.addEventListener( 'DOMContentLoaded', () => {
 					el.style.display = 'none';
 				}
 			});
+			console.log(windowSettings);
 		});
 	});
 
 	/* Вводим только цифры в инпуты */
-	popupCalcInput.forEach( input => {
+	popupCalcInput.forEach(input => {
 		input.addEventListener('keyup', function () {
 			this.value = this.value.replace(/[^0-9]+/g, '');
 			input.textContent = this.value;
 		});
 	});
 
-	popupCalcButton.addEventListener( 'click', () => {
-		if (popupCalcInput[0].value && popupCalcInput[1].value){
+	/* Открываем второе окно, если инпуты заполнены */
+	/* тут же инициализация первого пункта с селекта в обьект */
+	popupCalcButton.addEventListener('click', () => {
+		if (popupCalcInput[0].value && popupCalcInput[1].value) {
 			popupCalc.style.display = 'none';
 			popupCalcProfile.style.display = 'block';
 			windowSettings.width = popupCalcInput[0].value;
 			windowSettings.heigh = popupCalcInput[1].value;
+			windowSettings.glazingType = popupCalcSelect.options[0].value;
 		} else {
-			popupCalcInput.forEach( input => {
-				if (!input.value){
+			popupCalcInput.forEach(input => {
+				if (!input.value) {
 					input.focus();
 				}
 			});
@@ -120,14 +132,55 @@ window.addEventListener( 'DOMContentLoaded', () => {
 		console.log(windowSettings);
 	});
 
-	/* Закрытие окна */
-	popupCalcProfile.addEventListener( 'click', (event) => {
+	/* меняем выбор типа остекления, относительно выбора в селекте */
+	popupCalcSelect.addEventListener('change', function () {
+		windowSettings.glazingType = this.options[this.selectedIndex].value;
+		console.log(windowSettings);
+	});
+
+	/* Чекбоксы!!! выбираем только один, и записываем в обьект */
+	/* Выбраный уже снять нельзя, только переключить на другой */
+	popupCalcLabel.forEach(label => {
+		label.addEventListener('change', event => {
+			if (event.target.classList.contains('checkbox')) {
+				[].slice.call(document.querySelectorAll('.checkbox')).forEach(c => c.checked = false);
+				event.target.checked = true;
+			}
+			windowSettings.glazingProfile = label.querySelector('.checkbox-custom').getAttribute('id');
+		});
+	});
+
+	/* Переходим к следующему окну, только если чекбоксы выбран */
+	popupCalcProfileButton.addEventListener('click', () => {
+		if (windowSettings.glazingProfile) {
+			popupCalcProfile.style.display = 'none';
+			popupCalcEnd.style.display = 'block';
+		}
+	});
+
+	/* Закрытие окна Профиля*/
+	popupCalcProfile.addEventListener('click', (event) => {
 		const target = event.target;
 
 		if (target.classList.contains('popup_calc_profile_close') ||
 			target.parentNode.classList.contains('popup_calc_profile_close') ||
 			target.classList.contains('popup_calc_profile')) {
-				popupCalcProfile.style.display = 'none';
+			popupCalcProfile.style.display = 'none';
+			windowSettings = {};
+			console.log(windowSettings);
+		}
+	});
+
+	/* Закрытие окна конца калькулятора*/
+	popupCalcEnd.addEventListener('click', (event) => {
+		const target = event.target;
+
+		if (target.classList.contains('popup_calc_end_close') ||
+			target.parentNode.classList.contains('popup_calc_end_close') ||
+			target.classList.contains('popup_calc_end')) {
+			popupCalcEnd.style.display = 'none';
+			windowSettings = {};
+			console.log(windowSettings);
 		}
 	});
 
@@ -136,7 +189,7 @@ window.addEventListener( 'DOMContentLoaded', () => {
 	//////////////////////////////////////////////////////////////////
 	setTimeout(() => {
 		popupModal.style.display = "block";
-	}, 60*1000);
+	}, 60 * 1000);
 
 	//////////////////////////////////////////////////////////////////
 	/*              ТАБЫ ОСТЕКЛЕНИЕ БАЛКОНОВ И ЛОДЖИЙ               */
@@ -147,7 +200,7 @@ window.addEventListener( 'DOMContentLoaded', () => {
 
 	hideTabContent(1, glazingRow);
 
-	glazingSlider.addEventListener( 'click', function (event) {
+	glazingSlider.addEventListener('click', function (event) {
 		let target = event.target;
 		if (!target.classList.contains('glazing_block')) {
 			target = target.parentNode;
@@ -174,7 +227,7 @@ window.addEventListener( 'DOMContentLoaded', () => {
 
 	hideTabContent(1, decorationRow);
 
-	decorationSlider.addEventListener( 'click', function (event) {
+	decorationSlider.addEventListener('click', function (event) {
 		let target = event.target;
 		if (!target.classList.contains('no_click') && !target.classList.contains('after_click')) {
 			target = target.parentNode;
@@ -253,7 +306,7 @@ window.addEventListener( 'DOMContentLoaded', () => {
 				clearInterval(timeInterval);
 			}
 		}
-	}	
+	}
 
 	function getNormal(number) {
 		return number < 10 ? '0' + number : number;
@@ -265,7 +318,7 @@ window.addEventListener( 'DOMContentLoaded', () => {
 	const works = document.querySelectorAll('.works .row div');
 
 	works.forEach((work) => {
-		work.addEventListener( 'click', (event) => {
+		work.addEventListener('click', (event) => {
 			event.preventDefault();
 
 			const popupImage = document.createElement('div');
@@ -280,8 +333,8 @@ window.addEventListener( 'DOMContentLoaded', () => {
 			popupImage.style.alignItems = 'center';
 			popupImage.style.justifyContent = 'center';
 
-			popupImage.addEventListener( 'click', (event) => {
-				if (event.target.classList.contains('popup')){
+			popupImage.addEventListener('click', (event) => {
+				if (event.target.classList.contains('popup')) {
 					popupImage.style.display = 'none';
 					document.body.removeChild(popupImage);
 				}
