@@ -78,7 +78,7 @@ window.addEventListener( 'DOMContentLoaded', () => {
 		}
 	});
 
-	/* Обработка окна */
+	/* Обработка первого окна */
 	balconIcons.forEach( element => {
 		element.addEventListener( 'click', (event) => {
 			event.preventDefault();
@@ -93,7 +93,6 @@ window.addEventListener( 'DOMContentLoaded', () => {
 					el.style.display = 'none';
 				}
 			});
-			console.log(windowSettings);
 		});
 	});
 
@@ -109,12 +108,26 @@ window.addEventListener( 'DOMContentLoaded', () => {
 		if (popupCalcInput[0].value && popupCalcInput[1].value){
 			popupCalc.style.display = 'none';
 			popupCalcProfile.style.display = 'block';
+			windowSettings.width = popupCalcInput[0].value;
+			windowSettings.heigh = popupCalcInput[1].value;
 		} else {
 			popupCalcInput.forEach( input => {
 				if (!input.value){
 					input.focus();
 				}
 			});
+		}
+		console.log(windowSettings);
+	});
+
+	/* Закрытие окна */
+	popupCalcProfile.addEventListener( 'click', (event) => {
+		const target = event.target;
+
+		if (target.classList.contains('popup_calc_profile_close') ||
+			target.parentNode.classList.contains('popup_calc_profile_close') ||
+			target.classList.contains('popup_calc_profile')) {
+				popupCalcProfile.style.display = 'none';
 		}
 	});
 
@@ -163,11 +176,10 @@ window.addEventListener( 'DOMContentLoaded', () => {
 
 	decorationSlider.addEventListener( 'click', function (event) {
 		let target = event.target;
-		if (!target.classList.contains('no_click')) {
+		if (!target.classList.contains('no_click') && !target.classList.contains('after_click')) {
 			target = target.parentNode;
 		}
 		target = target.parentNode;
-
 		if (!target.querySelector('div').classList.contains('after_click')) {
 			for (let i = 0; i < decorationItem.length; i++) {
 				decorationItem[i].querySelector('div').classList.remove('after_click');
@@ -180,6 +192,7 @@ window.addEventListener( 'DOMContentLoaded', () => {
 			target.querySelector('div').classList.add('after_click');
 			target.querySelector('div').classList.remove('no_click');
 		}
+		target.querySelector('a').focus();
 	});
 
 	/* ОБЩАЯ ФУНКЦИЯ СКРЫТИЯ ВСЕХ ТАБОВ БЛЯ ТАБОВ */
@@ -270,6 +283,7 @@ window.addEventListener( 'DOMContentLoaded', () => {
 			popupImage.addEventListener( 'click', (event) => {
 				if (event.target.classList.contains('popup')){
 					popupImage.style.display = 'none';
+					document.body.removeChild(popupImage);
 				}
 			});
 		});
