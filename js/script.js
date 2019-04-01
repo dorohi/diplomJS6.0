@@ -70,7 +70,6 @@ window.addEventListener('DOMContentLoaded', () => {
 		element.addEventListener('click', () => {
 			popupCalc.style.display = "block";
 			windowSettings.type = balconIcons[0].getAttribute('class');
-			console.log(windowSettings);
 		});
 	});
 
@@ -129,13 +128,11 @@ window.addEventListener('DOMContentLoaded', () => {
 				}
 			});
 		}
-		console.log(windowSettings);
 	});
 
 	/* меняем выбор типа остекления, относительно выбора в селекте */
 	popupCalcSelect.addEventListener('change', function () {
 		windowSettings.glazingType = this.options[this.selectedIndex].value;
-		console.log(windowSettings);
 	});
 
 	/* Чекбоксы!!! выбираем только один, и записываем в обьект */
@@ -167,7 +164,6 @@ window.addEventListener('DOMContentLoaded', () => {
 			target.classList.contains('popup_calc_profile')) {
 			popupCalcProfile.style.display = 'none';
 			windowSettings = {};
-			console.log(windowSettings);
 		}
 	});
 
@@ -180,7 +176,6 @@ window.addEventListener('DOMContentLoaded', () => {
 			target.classList.contains('popup_calc_end')) {
 			popupCalcEnd.style.display = 'none';
 			windowSettings = {};
-			console.log(windowSettings);
 		}
 	});
 
@@ -375,13 +370,17 @@ window.addEventListener('DOMContentLoaded', () => {
 			let formData = new FormData(form);
 			statusMessage.innerHTML = "<img src=\"img/ajax-loader.gif\" alt=\"loader\" style=\"margin-top: 20px;\">";
 			statusMessage.style.paddingBottom = '20px';
-			postData(formData, object).then(() => {
+			postData(formData, object)
+			.then(() => {
 				statusMessage.style.color = 'green';
 				statusMessage.innerHTML = "ЗАЯВКА ОТПРАВЛЕНА<br> Мы перезвоним Вам в течении 10 минут!";
-			}).catch(() => {
+			})
+			.catch(() => {
 				statusMessage.style.color = 'red';
 				statusMessage.innerHTML = "ПРОИЗОШЛА ОШИБКА!<br>Попробуйте, пожалуйста, позже.";
-			}).then(clearInput(curentFormInputs));
+			})
+			.then(clearInput(curentFormInputs))
+			.then(clearObject(object));
 		});
 	}
 
@@ -421,5 +420,9 @@ window.addEventListener('DOMContentLoaded', () => {
 		for (let i = 0; i < inputs.length; i++) {
 			inputs[i].value = '';
 		}
+	}
+	
+	function clearObject(object){
+		object = {};
 	}
 });
