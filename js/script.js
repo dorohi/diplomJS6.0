@@ -354,25 +354,28 @@ window.addEventListener('DOMContentLoaded', () => {
 	});
 
 	// Формы модальных окон "Обратного звонка"
-	const popupForms = document.querySelector('.popup form');
-	sendForm(popupForms);
+	const popupForm = document.querySelector('.popup form');
+	sendForm(popupForm);
 
 	// Формы модальных окон "Вызов замерщика"
-	const popupEngineerForms = document.querySelector('.popup_engineer form');
-	sendForm(popupEngineerForms);
+	const popupEngineerForm = document.querySelector('.popup_engineer form');
+	sendForm(popupEngineerForm);
 
-	function sendForm(form) {
+	// Формы модальных окон "Отправка калькулятора"
+	const popupCalcEndForms = document.querySelector('.popup_calc_end form');
+	sendForm(popupCalcEndForms, windowSettings);
+
+	function sendForm(form, object = null) {
 		const statusMessage = document.createElement('div'),
 			curentFormInputs = form.querySelectorAll('input');
 
 		form.addEventListener('submit', event => {
-			console.log(curentFormInputs);
 			event.preventDefault();
 			form.appendChild(statusMessage);
 			let formData = new FormData(form);
 			statusMessage.innerHTML = "<img src=\"img/ajax-loader.gif\" alt=\"loader\" style=\"margin-top: 20px;\">";
 			statusMessage.style.paddingBottom = '20px';
-			postData(formData).then(() => {
+			postData(formData, object).then(() => {
 				statusMessage.style.color = 'green';
 				statusMessage.innerHTML = "ЗАЯВКА ОТПРАВЛЕНА<br> Мы перезвоним Вам в течении 10 минут!";
 			}).catch(() => {
@@ -382,12 +385,12 @@ window.addEventListener('DOMContentLoaded', () => {
 		});
 	}
 
-	function postData(data) {
+	function postData(data, object = null) {
 		return new Promise(function (resolve, reject) {
 			let request = new XMLHttpRequest();
 			request.open('POST', 'server.php');
 			request.setRequestHeader('Content-Type', 'aplication/json charset=utf-8');
-			let json = formDataToJSON(data);
+			let json = formDataToJSON(data, object);
 			request.onreadystatechange = () => {
 				if (request.readyState == 4) {
 					if (request.status == 200) {
@@ -401,12 +404,17 @@ window.addEventListener('DOMContentLoaded', () => {
 		});
 	}
 
-	function formDataToJSON(formData) {
+	function formDataToJSON(formData, object = null) {
 		const obj = {};
 		formData.forEach((value, key) => {
 			obj[key] = value;
 		});
-		return JSON.stringify(obj);
+		if (object) {
+			return JSON.stringify(Object.assign(object, obj));
+		} else {
+			return JSON.stringify(obj);
+		}
+
 	}
 
 	function clearInput(inputs) {
