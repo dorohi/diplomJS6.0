@@ -4,7 +4,7 @@ module.exports = {
 	context: path.resolve(__dirname, 'src'),
 	entry: ['@babel/polyfill', './script.js'],
 	output: {
-		filename: "bundle.js",
+		filename: "js/bundle.js",
 		path: path.resolve(__dirname, 'public')
 	},
 	mode: 'production',

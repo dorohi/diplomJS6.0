@@ -49,9 +49,8 @@ function calc(){
 
 	/* Вводим только цифры в инпуты */
 	popupCalcInput.forEach(input => {
-		input.addEventListener('keypress', function () {
+		input.addEventListener('keyup', function () {
 			this.value = this.value.replace(/[^0-9]+/g, '');
-			this.focus();
 		});
 	});
 
@@ -103,6 +102,18 @@ function calc(){
 
 	/* Закрытие окна конца калькулятора*/
 	closeModal(popupCalcEnd, 'popup_calc_end', 'popup_calc_end_close');
+
+	function closeModal (trigger, selector, closeSelector){
+		trigger.addEventListener('click', (event) => {
+			const target = event.target;
+	
+			if (target.classList.contains(closeSelector) ||
+				target.parentNode.classList.contains(closeSelector) ||
+				target.classList.contains(selector)) {
+				trigger.style.display = 'none';
+			}
+		});
+	}
 
 	return windowSettings;
 }

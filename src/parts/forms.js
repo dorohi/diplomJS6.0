@@ -5,7 +5,7 @@
 //////////////////////////////////////////////////////////////////
 
 function forms(windowSettings) {
-
+	
 	//Формы на сайте
 	const freeMasterForms = document.querySelectorAll('.main_form');
 	freeMasterForms.forEach(form => {
