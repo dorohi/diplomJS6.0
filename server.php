@@ -1,3 +1,3 @@
 <?php
 sleep(2);
-echo $_POST;
+echo 'Ответ сервера';
