@@ -8,13 +8,15 @@ window.addEventListener('DOMContentLoaded', () => {
 		tabs = require('./parts/tabs.js'),
 		mask = require('./parts/mask.js'),
 		forms = require('./parts/forms.js'),
+		calc = require('./parts/calc.js'),
 		modals = require('./parts/modals.js'),
 		timer = require('./parts/timer.js');
 
 	gallery();
 	tabs();
 	mask();
-	forms();
+	const windowSettings = calc();
+	forms(windowSettings);
 	modals();
 	timer();
 });
