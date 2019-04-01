@@ -1,5 +1,8 @@
 'use strict';
 
+require('es6-promise').polyfill();
+require('formdata-polyfill');
+
 window.addEventListener('DOMContentLoaded', () => {
 	let gallery = require('./parts/gallery.js'),
 		tabs = require('./parts/tabs.js'),
