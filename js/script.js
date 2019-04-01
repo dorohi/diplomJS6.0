@@ -371,16 +371,16 @@ window.addEventListener('DOMContentLoaded', () => {
 			statusMessage.innerHTML = "<img src=\"img/ajax-loader.gif\" alt=\"loader\" style=\"margin-top: 20px;\">";
 			statusMessage.style.paddingBottom = '20px';
 			postData(formData, object)
-			.then(() => {
-				statusMessage.style.color = 'green';
-				statusMessage.innerHTML = "ЗАЯВКА ОТПРАВЛЕНА<br> Мы перезвоним Вам в течении 10 минут!";
-			})
-			.catch(() => {
-				statusMessage.style.color = 'red';
-				statusMessage.innerHTML = "ПРОИЗОШЛА ОШИБКА!<br>Попробуйте, пожалуйста, позже.";
-			})
-			.then(clearInput(curentFormInputs))
-			.then(clearObject(object));
+				.then(() => {
+					statusMessage.style.color = 'green';
+					statusMessage.innerHTML = "ЗАЯВКА ОТПРАВЛЕНА<br> Мы перезвоним Вам в течении 10 минут!";
+				})
+				.catch(() => {
+					statusMessage.style.color = 'red';
+					statusMessage.innerHTML = "ПРОИЗОШЛА ОШИБКА!<br>Попробуйте, пожалуйста, позже.";
+				})
+				.then(clearInput(curentFormInputs))
+				.then(clearObject(object));
 		});
 	}
 
@@ -421,8 +421,48 @@ window.addEventListener('DOMContentLoaded', () => {
 			inputs[i].value = '';
 		}
 	}
-	
-	function clearObject(object){
+
+	function clearObject(object) {
 		object = {};
+	}
+
+	//////////////////////////////////////////////////////////////////
+	/*              МАСКА ДЛЯ ВВОДА ТЕЛЕФОННЫХ НОМЕРОВ              */
+	//////////////////////////////////////////////////////////////////
+
+	const userPhones = document.querySelectorAll('input');
+	userPhones.forEach(function (element) {
+		if (element.getAttribute('name') === 'user_phone') {
+			element.addEventListener("focus", mask);
+			element.addEventListener("input", mask);
+			element.addEventListener("blur", mask);
+		}
+	});
+
+	function mask(event) {
+		let matrix = "+7 (___) ___-__-__",
+			curentSimvol = 0,
+			onlyNumbers = matrix.replace(/\D/g, ""),
+			value = this.value.replace(/\D/g, "");
+
+		if (onlyNumbers.length >= value.length) {
+			value = onlyNumbers;
+		}
+
+		this.value = matrix.replace(/./g, function (a) {
+			if (/[_\d]/.test(a) && curentSimvol < value.length) {
+				return value.charAt(curentSimvol++);
+			} else if (curentSimvol >= value.length) {
+				return '';
+			} else {
+				return a;
+			}
+		});
+
+		if (event.type == "blur") {
+			if (this.value.length <= 3) {
+				this.value = "";
+			}
+		}
 	}
 });
