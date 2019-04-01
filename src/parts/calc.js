@@ -25,9 +25,6 @@ function calc(){
 		});
 	});
 
-	/* Закрытие окна */
-	closeModal(popupCalc, 'popup_calc', 'popup_calc_close');
-
 	/* Обработка первого окна */
 	balconIcons.forEach(element => {
 		element.addEventListener('click', (event) => {
@@ -61,7 +58,9 @@ function calc(){
 			popupCalc.style.display = 'none';
 			popupCalcProfile.style.display = 'block';
 			windowSettings.width = popupCalcInput[0].value;
+			popupCalcInput[0].value = '';
 			windowSettings.heigh = popupCalcInput[1].value;
+			popupCalcInput[1].value = '';
 			windowSettings.glazingType = popupCalcSelect.options[0].value;
 		} else {
 			popupCalcInput.forEach(input => {
@@ -94,26 +93,9 @@ function calc(){
 		if (windowSettings.glazingProfile) {
 			popupCalcProfile.style.display = 'none';
 			popupCalcEnd.style.display = 'block';
+			document.querySelectorAll('.checkbox').forEach(c => c.checked = false);
 		}
 	});
-
-	/* Закрытие окна Профиля*/
-	closeModal(popupCalcProfile, 'popup_calc_profile', 'popup_calc_profile_close');
-
-	/* Закрытие окна конца калькулятора*/
-	closeModal(popupCalcEnd, 'popup_calc_end', 'popup_calc_end_close');
-
-	function closeModal (trigger, selector, closeSelector){
-		trigger.addEventListener('click', (event) => {
-			const target = event.target;
-	
-			if (target.classList.contains(closeSelector) ||
-				target.parentNode.classList.contains(closeSelector) ||
-				target.classList.contains(selector)) {
-				trigger.style.display = 'none';
-			}
-		});
-	}
 
 	return windowSettings;
 }

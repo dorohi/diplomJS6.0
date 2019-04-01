@@ -35,6 +35,9 @@ function tabs() {
 	const decorationSlider = document.querySelector('.decoration_slider'),
 		decorationItem = document.querySelectorAll('.decoration_item'),
 		decorationRow = document.querySelectorAll('.decoration_row');
+	
+	
+	decorationSlider.querySelectorAll('a')[0].focus();
 
 	hideTabContent(1, decorationRow);
 
