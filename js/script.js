@@ -342,4 +342,63 @@ window.addEventListener('DOMContentLoaded', () => {
 		});
 	});
 
+	//////////////////////////////////////////////////////////////////
+	/*               ФОРМЫ. ЗАПИСЬ НА БЕСПЛАТНЫЙ ЗАМЕР              */
+	//////////////////////////////////////////////////////////////////
+	const freeMasterForms = document.querySelectorAll('.main_form');
+	//console.log(freeMasterForms);
+
+	freeMasterForms.forEach(form => {
+		const statusMessage = document.createElement('div'),
+			curentFormInputs = form.querySelectorAll('input');
+
+		form.addEventListener('submit', event => {
+			event.preventDefault();
+			form.appendChild(statusMessage);
+			let formData = new FormData(form);
+			statusMessage.innerHTML = "<img src=\"img/ajax-loader.gif\" alt=\"loader\" style=\"margin-top: 20px;\">";
+			postData(formData).then( ()=> {
+				statusMessage.style.color = 'green';
+				statusMessage.innerHTML = "ЗАЯВКА ОТПРАВЛЕНА<hr> Мы перезвоним Вам в течении 10 минут!";
+			}).catch( () => {
+				statusMessage.style.color = 'red';
+				statusMessage.innerHTML = "ПРОИЗОШЛА ОШИБКА!<hr>Попробуйте, пожалуйста, позже.";
+				console.log();
+			}).then(clearInput(curentFormInputs));
+		});
+	});
+
+	function postData(data) {
+		return new Promise(function (resolve, reject) {
+			let request = new XMLHttpRequest();
+			request.open('POST', 'server.php');
+			request.setRequestHeader('Content-Type', 'aplication/json charset=utf-8');
+			let json = formDataToJSON(data);
+			request.onreadystatechange = () => {
+				console.log(request.readyState);
+				if (request.readyState == 4) {
+					if (request.status == 200) {
+						resolve();
+					} else {
+						reject();
+					}
+				}
+			};
+			request.send(json);
+		});
+	}
+
+	function formDataToJSON(formData) {
+		const obj = {};
+		formData.forEach( (value, key) => {
+			obj[key] = value;
+		});
+		return JSON.stringify(obj);
+	}
+
+	function clearInput(inputs) {
+		for (let i = 0; i < inputs.length; i++) {
+			inputs[i].value = '';
+		}
+	}
 });
