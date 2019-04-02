@@ -11330,6 +11330,9 @@ function calc() {
 
   balconIcons.forEach(function (element) {
     element.addEventListener('click', function (event) {
+      balconIcons.forEach(function (img) {
+        img.querySelector('img').classList.remove('do_image_more');
+      });
       event.preventDefault();
       var typeWindowCalc = event.target.parentNode.getAttribute('class');
       bigImg.forEach(function (el) {
@@ -11342,7 +11345,7 @@ function calc() {
           el.style.display = 'none';
         }
       });
-      console.log(windowSettings);
+      element.querySelector('img').classList.add('do_image_more');
     });
   });
   /* Вводим только цифры в инпуты */

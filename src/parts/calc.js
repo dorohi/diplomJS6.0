@@ -28,19 +28,21 @@ function calc(){
 	/* Обработка первого окна */
 	balconIcons.forEach(element => {
 		element.addEventListener('click', (event) => {
+			balconIcons.forEach( img => {
+				img.querySelector('img').classList.remove('do_image_more');
+			});
 			event.preventDefault();
 			const typeWindowCalc = event.target.parentNode.getAttribute('class');
-
 			bigImg.forEach(el => {
 				const typeSelectedWindow = el.getAttribute('id');
 				if (typeSelectedWindow == typeWindowCalc) {
 					el.style.display = 'inline-block';
-					windowSettings.type = typeWindowCalc;
+					windowSettings.type = typeWindowCalc;					
 				} else {
 					el.style.display = 'none';
 				}
 			});
-			console.log(windowSettings);
+			element.querySelector('img').classList.add('do_image_more');
 		});
 	});
 
