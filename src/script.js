@@ -4,7 +4,7 @@ require('es6-promise').polyfill();
 require('formdata-polyfill');
 
 window.addEventListener('DOMContentLoaded', () => {
-	let gallery = require('./parts/gallery.js'),
+	var gallery = require('./parts/gallery.js'),
 		tabs = require('./parts/tabs.js'),
 		mask = require('./parts/mask.js'),
 		forms = require('./parts/forms.js'),
@@ -15,7 +15,7 @@ window.addEventListener('DOMContentLoaded', () => {
 	gallery();
 	tabs();
 	mask();
-	const windowSettings = calc();
+	var windowSettings = calc();
 	forms(windowSettings);
 	modals();
 	timer();
