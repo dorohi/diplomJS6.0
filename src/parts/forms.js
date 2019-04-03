@@ -54,7 +54,9 @@ function forms(windowSettings) {
 			request.open('POST', 'server.php');
 			request.setRequestHeader('Content-Type', 'aplication/json charset=utf-8');
 			let json = formDataToJSON(data, object);
+			console.log(json);
 			request.onreadystatechange = () => {
+				console.log(request.readyState);
 				if (request.readyState == 4) {
 					if (request.status == 200) {
 						resolve();
